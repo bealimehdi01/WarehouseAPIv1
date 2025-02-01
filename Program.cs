@@ -4,8 +4,7 @@ using WarehouseAPI.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure PostgreSQL Database Connection
-var connectionString = Environment.GetEnvironmentVariable("DefaultConnection")
-                       ?? builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<WarehouseDbContext>(options =>
     options.UseNpgsql(connectionString)
