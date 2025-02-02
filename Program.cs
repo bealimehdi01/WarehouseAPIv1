@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql;
 using WarehouseAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure PostgreSQL Database Connection
+// Configure MySQL Database Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<WarehouseDbContext>(options =>
-    options.UseNpgsql(connectionString)
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
 // Add CORS policy
