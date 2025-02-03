@@ -14,35 +14,35 @@ builder.Services.AddDbContext<WarehouseDbContext>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
-        builder =>
+        policy =>
         {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
         });
 });
 
+// Add services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Enable Swagger in all environments (useful for debugging in production)
+app.UseSwagger();
+app.UseSwaggerUI();
 
+// Use HTTPS redirection
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
 // Use CORS policy
 app.UseCors("AllowAll");
 
-// Ensure the app listens on all available hosts and Railway's assigned port
+// Ensure the app listens on Railway's assigned port
 var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
-app.Urls.Add($"http://*:{port}");
+app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.MapControllers();
 app.Run();
