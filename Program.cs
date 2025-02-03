@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql;
 using WarehouseAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +39,10 @@ app.UseAuthorization();
 
 // Use CORS policy
 app.UseCors("AllowAll");
+
+// Ensure the app listens on all available hosts and Railway's assigned port
+var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
+app.Urls.Add($"http://*:{port}");
 
 app.MapControllers();
 app.Run();
